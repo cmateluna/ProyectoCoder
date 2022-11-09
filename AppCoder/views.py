@@ -13,7 +13,7 @@ from AppCoder.models import Curso
 #     return HttpResponse(documentoDeTexto)
 
 def inicio(request):
-    return render(request, "AppCoder/index.html")
+    return render(request, "AppCoder/base.html")
 
 def cursos(request):
     return render(request, "AppCoder/cursos.html")
