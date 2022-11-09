@@ -16,6 +16,12 @@ def inicio(request):
     return render(request, "AppCoder/base.html")
 
 def cursos(request):
+    # Obtener el listado de objecto en la BD
+    cursos = Curso.objects.all()
+    
+    for curso in cursos:
+        print(curso.nombre)
+    
     return render(request, "AppCoder/cursos.html")
 
 def profesores(request):
