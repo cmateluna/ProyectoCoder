@@ -15,14 +15,19 @@ from AppCoder.models import Curso
 def inicio(request):
     return render(request, "AppCoder/base.html")
 
-def cursos(request):
-    # Obtener el listado de objecto en la BD
-    cursos = Curso.objects.all()
-    
-    for curso in cursos:
-        print(curso.nombre)
-    
+def cursos(request):   
     return render(request, "AppCoder/cursos.html")
+
+def creacion_curso(request):
+    
+    if request.method == "POST":
+        nombre_curso = request.POST["curso"]
+        numero_camada = request.POST["camada"]
+        
+        curso = Curso(nombre=nombre_curso, camada=numero_camada)
+        curso.save()
+    
+    return render(request, "AppCoder/curso_formulario.html")
 
 def profesores(request):
     return render(request, "AppCoder/profesores.html")
