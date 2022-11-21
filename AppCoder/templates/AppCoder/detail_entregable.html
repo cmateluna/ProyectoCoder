@@ -1,0 +1,11 @@
+{% extends 'AppCoder/base.html' %}
+
+{% block contenido %}
+
+<h1>Detalle del desafio entregable</h1>
+
+<p>Nombre: {{entregable.nombre}}</p>
+<p>Fecha: {{entregable.fechaDeEntrega}}</p>
+<p>Entregado: {{entregable.entregado}}</p>
+
+{% endblock  %}

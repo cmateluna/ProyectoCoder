@@ -34,6 +34,6 @@ class Entregable(models.Model):
     entregado = models.BooleanField()    
     
     def __str__(self):
-        return f"{self.apellido} --> {self.fechaDeEntrega}"
+        return f"{self.nombre} -> {self.fechaDeEntrega}"
 
 

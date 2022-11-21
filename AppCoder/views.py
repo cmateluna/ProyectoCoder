@@ -1,12 +1,14 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from AppCoder.forms import ProfesorFormulario, EstudianteFormulario, CursoFormulario
-from AppCoder.models import Curso, Profesor, Estudiante
+from AppCoder.models import Curso, Profesor, Estudiante, Entregable
 
 
 # Dependencias para resolver apertura de archivos usando rutas relativas
 from ProyectoCoder.settings import BASE_DIR
 import os
+
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 
 # Create your views here.
@@ -156,10 +158,33 @@ def test(request):
     return HttpResponse(file.read())
 
 
-# def curso(self):
-
-#     curso = Curso(nombre="Desarrollo web", camada="19881")
-#     curso.save()
-#     documentoDeTexto = f"----->Curso: {curso.nombre}  Camada: {curso.camada}"
-
-#     return HttpResponse(documentoDeTexto)
+class EntregablesList(ListView):
+    
+    model = Entregable
+    template_name = "AppCoder/list_entregables.html"
+    
+class EntregableDetail(DetailView):
+    
+    model: Entregable
+    template_name = "AppCoder/detail_entregable.html"    
+    
+class EntregableCreate(CreateView):
+    
+    model = Entregable 
+    success_url = "/coder/entregables/"   
+    fields = ["nombre", "fechaDeEntrega", "entregado"]
+    template_name = "AppCoder/entregable_form.html"
+    
+class EntregableUpdate(UpdateView):
+    
+    model = Entregable 
+    success_url = "/coder/entregables/"   
+    fields = ["fechaDeEntrega", "entregado"]    
+    
+class EntregableDelete(DeleteView):
+    
+    model = Entregable
+    success_url = "/coder/entregables/"
+    
+    
+        
