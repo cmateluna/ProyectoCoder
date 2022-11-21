@@ -1,7 +1,13 @@
 from django.http import HttpResponse
-from django.shortcuts import render
-from AppCoder.forms import ProfesorFormulario, EstudianteFormulario
+from django.shortcuts import render, redirect
+from AppCoder.forms import ProfesorFormulario, EstudianteFormulario, CursoFormulario
 from AppCoder.models import Curso, Profesor, Estudiante
+
+
+# Dependencias para resolver apertura de archivos usando rutas relativas
+from ProyectoCoder.settings import BASE_DIR
+import os
+
 
 # Create your views here.
 
@@ -9,7 +15,65 @@ def inicio(request):
     return render(request, "AppCoder/base.html")
 
 def cursos(request):   
-    return render(request, "AppCoder/cursos.html")
+    
+    errores = ""
+    
+    # Validamos tipo de peticion
+    if request.method == "POST":
+        
+        # Cargamos los datos en el formlario
+        formulario = CursoFormulario(request.POST)
+        
+        # Validamos los datos
+        if formulario.is_valid():
+            # Recuperamos los datos sanitizados
+            data = formulario.cleaned_data
+            # Creamos el curso
+            curso = Curso(nombre=data["nombre"], camada=data["camada"])
+            # Guardamos el curso
+            curso.save()
+        else:
+            # Si el formulario no es valido guardamos los errores para mostrarlos
+            errores = formulario.errors    
+    
+    # Recuperar todos los cursos de la BD
+    cursos = Curso.objects.all() # Obtener TODOS los registro de ese modelo
+    # Creamos el formulario vacio
+    formulario = CursoFormulario()
+    # Creamos el contexto
+    contexto = {"listado_cursos": cursos, "formulario": formulario, "errores": errores}
+    # Retornamos la respuesta
+    return render(request, "AppCoder/cursos.html", contexto)
+
+
+def editar_curso(request, id):
+    curso = Curso.objects.get(id=id)
+    
+    if request.method == "POST":
+        formulario = CursoFormulario(request.POST)
+        
+        if formulario.is_valid():
+            data = formulario.cleaned_data
+            
+            curso.nombre = data["nombre"]
+            curso.camada = data["camada"]
+            curso.save() 
+            return redirect("coder-cursos")
+        else:
+            return render(request, "AppCoder/editar_curso.html", {"formulario": formulario, "errores": formulario.errors})
+        
+    else:
+        formulario = CursoFormulario(initial={"nombre": curso.nombre, "camada": curso.camada})
+        return render(request, "AppCoder/editar_curso.html", {"formulario": formulario, "errores":""})    
+
+
+def eliminar_curso(request, id):
+    curso = Curso.objects.get(id=id)
+    curso.delete()
+    
+    return redirect("coder-cursos")
+
+
 
 def creacion_curso(request):
     
@@ -67,7 +131,6 @@ def creacion_profesores(request):
     return render(request, "AppCoder/profesores_formulario.html", contexto)
 
 
-
 def buscar_curso(request):
     
     return render(request, "AppCoder/busqueda_cursos.html")
@@ -83,6 +146,14 @@ def resultados_busqueda_cursos(request):
 def entregables(request):
     return render(request, "AppCoder/entregables.html")
 
+
+
+def test(request):
+    ruta = os.path.join(BASE_DIR, "AppCoder/templates/AppCoder/base.html")
+    print(BASE_DIR, __file__)
+    file = open(ruta)
+    
+    return HttpResponse(file.read())
 
 
 # def curso(self):

@@ -2,14 +2,18 @@
 
 {% block contenido %}
 
+<h1>Cursos disponible</h1>
+<p>Estos son los cursos que todavia</p>
+
+{% if listado_cursos %}
+
 <ul>
-
-    {% for curso in cursos %}
-
-    <li>{{curso.nombre}} - {{curso.camada}}</li>
-
-    {% endfor %}
-
+{% for curso in listado_cursos %}
+  <li> {{curso}} </li> 
+  {% endfor %}
 </ul>
+  {% else %}
+  <p>No hay cursos disponible de momentos</p>
+{% endif %}
 
 {% endblock  %}
