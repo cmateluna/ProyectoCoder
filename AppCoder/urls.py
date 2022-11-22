@@ -1,5 +1,6 @@
 from django.urls import path
 from AppCoder.views import *
+from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path('', inicio, name="coder-inicio"), #esta era nuestra primera pagina
@@ -21,4 +22,7 @@ urlpatterns = [
     path("entregables/borrar/<pk>/", EntregableDelete.as_view(), name="coder-entregables-delete"),
     
     path("test/", test),
+    path("login/", iniciar_sesion, name="auth-login"),
+    path("register/", registrar_usuario, name="auth-register"),
+    path("logout/", LogoutView.as_view(), name="auth-logout")
 ]

@@ -30,10 +30,8 @@ class Profesor(models.Model):
      
 class Entregable(models.Model):
     nombre = models.CharField(max_length=100)
-    fechaDeEntrega = models.DateField()
-    entregado = models.BooleanField()    
-    
+    FechaDeEntrega = models.DateField()
+    entregado = models.BooleanField()
+
     def __str__(self):
-        return f"{self.nombre} -> {self.fechaDeEntrega}"
-
-
+        return f"{self.nombre} -> {self.FechaDeEntrega}"
